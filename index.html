@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbage Segregation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #upload-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #uploaded-image {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        #segregation-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #d3f4d1;
+            display: none;
+        }
+
+        .segregation-text {
+            font-size: 18px;
+        }
+
+        #error-message {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Garbage Segregation Using Image Upload</h1>
+
+    <div id="upload-container">
+        <label for="image-upload">Upload a waste image:</label><br>
+        <input type="file" id="image-upload" accept="image/*">
+        <div id="error-message">Please upload a valid image.</div>
+    </div>
+
+    <div id="image-preview">
+        <img id="uploaded-image" src="" alt="Uploaded Waste Image" style="display: none;">
+    </div>
+
+    <div id="segregation-result">
+        <p class="segregation-text">This waste is classified as: <span id="classification"></span></p>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const uploadedImage = document.getElementById('uploaded-image');
+        const segregationResult = document.getElementById('segregation-result');
+        const classificationText = document.getElementById('classification');
+        const errorMessage = document.getElementById('error-message');
+
+        imageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            if (file && file.type.startsWith('image')) {
+                errorMessage.style.display = 'none';
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                    classifyGarbage(file);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                uploadedImage.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        function classifyGarbage(file) {
+            // Here you would call an API or model to classify the image
+            // For now, we simulate a classification result
+            setTimeout(() => {
+                const categories = ['Plastic', 'Paper', 'Organic', 'Metal'];
+                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+                // Simulate classification
+                classificationText.textContent = randomCategory;
+                segregationResult.style.display = 'block';
+            }, 2000); // Simulate delay
+        }
+    </script>
+</body>
+</html>
